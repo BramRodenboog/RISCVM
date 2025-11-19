@@ -17,3 +17,11 @@ func (cpu *cpu) run() {
 	instrDecoded := pkg.ErrorCheck(cpu.identify(instr))
 	fmt.Printf("InstrDecoded: %v\n", instrDecoded)
 }
+
+func NewCpu() *cpu {
+	return &cpu{
+		registers: [32]uint32{},
+		pc:        DRAMSIZE,
+		bus:       *newBus(),
+	}
+}

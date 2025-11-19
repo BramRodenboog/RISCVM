@@ -34,3 +34,9 @@ func (dram *dram) dramLoad16(address uint32) uint32 {
 func (dram *dram) dramLoad32(address uint32) uint32 {
 	return uint32(dram.mem[address-DRAMBASE] | (dram.mem[address-DRAMBASE+1] << 8) | (dram.mem[address-DRAMBASE+2] << 16) | (dram.mem[address-DRAMBASE+3] << 24))
 }
+
+func newDram() *dram {
+	return &dram{
+		mem: [DRAMSIZE]uint8{},
+	}
+}

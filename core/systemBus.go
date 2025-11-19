@@ -11,3 +11,9 @@ type bus struct {
 func (bus *bus) busLoad(address uint32, size uint) uint32 {
 	return pkg.ErrorCheck(bus.dram.dramLoad(address, size))
 }
+
+func newBus() *bus {
+	return &bus{
+		dram: *newDram(),
+	}
+}
