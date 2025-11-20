@@ -12,13 +12,13 @@ func (cpu *cpu) fetch() uint32 {
 }
 
 // ToDo Goroutine
-func (cpu *cpu) identify(instr uint32) (interface{}, error) {
+func (cpu *cpu) identify(instr uint32) (opcodes.IType, error) {
 	Opcode := uint8(instr & 0x7f)
 	switch Opcode {
 	case opcodes.ITypeCode:
 		return opcodes.DecodeIType(instr), nil
 	default:
-		return nil, fmt.Errorf("unsupported opcode: %d", Opcode)
+		return opcodes.DecodeIType(instr), fmt.Errorf("unsupported opcode: %d", Opcode)
 	}
 }
 

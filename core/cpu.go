@@ -14,14 +14,16 @@ type cpu struct {
 
 func (cpu *cpu) run() {
 	instr := cpu.fetch()
+
 	instrDecoded := pkg.ErrorCheck(cpu.identify(instr))
+
 	fmt.Printf("InstrDecoded: %v\n", instrDecoded)
 }
 
 func NewCpu() *cpu {
 	return &cpu{
 		registers: [32]uint32{},
-		pc:        DRAMSIZE,
+		pc:        uint32(DRAMBASE),
 		bus:       *newBus(),
 	}
 }
