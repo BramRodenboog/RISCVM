@@ -6,6 +6,6 @@ import (
 
 func main() {
 	cpu := core.NewCpu()
-	program := core.NewProgram([]uint32{0x00100093, 0x00000073})
+	program := core.NewProgram([]uint32{0x00100093})
 	program.Run(cpu)
 }

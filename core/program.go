@@ -15,7 +15,7 @@ func (program *program) Run(cpu *cpu) {
 
 	for {
 		cpu.run()
-		cpu.pc += 4 // !!!
+		cpu.pc += 4
 
 	}
 }
