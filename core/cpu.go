@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 
+	"github.com/BramRodenboog/RISCVM/core/opcodes"
 	pkg "github.com/BramRodenboog/RISCVM/pkg"
 )
 
@@ -18,8 +19,10 @@ func (cpu *cpu) run() {
 
 	instrDecoded := pkg.ErrorCheck(cpu.identify(instr))
 	value := pkg.ErrorCheck(cpu.execute(instrDecoded))
-
-	fmt.Printf("value: %v\n", value)
+	if wb, ok := instrDecoded.(opcodes.WriteBack); ok {
+		cpu.writeBack(wb, value)
+	}
+	fmt.Printf("value: %v\n", cpu.dump())
 }
 
 func NewCpu() *cpu {
@@ -28,4 +31,8 @@ func NewCpu() *cpu {
 		pc:        uint32(DRAMBASE),
 		bus:       *newBus(),
 	}
+}
+
+func (cpu *cpu) dump() [32]uint32 {
+	return cpu.registers
 }

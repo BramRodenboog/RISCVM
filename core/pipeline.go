@@ -42,6 +42,6 @@ func memory() {
 
 }
 
-func writeBack() {
-
+func (cpu *cpu) writeBack(Type opcodes.WriteBack, value uint32) {
+	cpu.registers[Type.GetRd()] = value
 }
