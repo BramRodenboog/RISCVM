@@ -22,7 +22,7 @@ func (cpu *cpu) run() {
 	if wb, ok := instrDecoded.(opcodes.WriteBack); ok {
 		cpu.writeBack(wb, value)
 	}
-	fmt.Printf("value: %v\n", cpu.dump())
+	fmt.Printf("registers: %v\n", cpu.dump())
 }
 
 func NewCpu() *cpu {

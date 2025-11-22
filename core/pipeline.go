@@ -38,8 +38,8 @@ func (cpu *cpu) execute(Type interface{}) (uint32, error) {
 	}
 }
 
-func memory() {
-
+func (cpu *cpu) memory(address uint32, size uint, data uint32) {
+	cpu.bus.busStore(address, size, data)
 }
 
 func (cpu *cpu) writeBack(Type opcodes.WriteBack, value uint32) {
