@@ -10,14 +10,16 @@ type cpu struct {
 	registers [32]uint32
 	pc        uint32
 	bus       bus
+	alu       alu
 }
 
 func (cpu *cpu) run() {
 	instr := cpu.fetch()
 
 	instrDecoded := pkg.ErrorCheck(cpu.identify(instr))
+	value := pkg.ErrorCheck(cpu.execute(instrDecoded))
 
-	fmt.Printf("InstrDecoded: %v\n", instrDecoded)
+	fmt.Printf("value: %v\n", value)
 }
 
 func NewCpu() *cpu {
