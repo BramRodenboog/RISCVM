@@ -7,13 +7,13 @@ import (
 	pipelineTypes "github.com/BramRodenboog/RISCVM/core/types"
 )
 
-// ToDo Goroutine
+// ToDo cleanup Go-routine 
 func (cpu *cpu) fetch(pipelineChannel chan pipelineTypes.ChainPipe) {
 	pipelineChannel <- pipelineTypes.ChainPipe{Instr: cpu.bus.busLoad(cpu.pc, 32)}
 	close(pipelineChannel)
 }
 
-// ToDo Goroutine
+// ToDo cleanup Goroutine
 func (cpu *cpu) identify(pipelineChannel chan pipelineTypes.ChainPipe) (interface{}, error) {
 	dataChain, ok := <-pipelineChannel
 	if !ok {
