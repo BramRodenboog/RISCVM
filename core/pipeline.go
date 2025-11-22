@@ -4,21 +4,27 @@ import (
 	"fmt"
 
 	"github.com/BramRodenboog/RISCVM/core/opcodes"
+	pipelineTypes "github.com/BramRodenboog/RISCVM/core/types"
 )
 
 // ToDo Goroutine
-func (cpu *cpu) fetch() uint32 {
-	return cpu.bus.busLoad(cpu.pc, 32)
+func (cpu *cpu) fetch(pipelineChannel chan pipelineTypes.ChainPipe) {
+	pipelineChannel <- pipelineTypes.ChainPipe{Instr: cpu.bus.busLoad(cpu.pc, 32)}
+	close(pipelineChannel)
 }
 
 // ToDo Goroutine
-func (cpu *cpu) identify(instr uint32) (interface{}, error) {
-	Opcode := uint8(instr & 0x7f)
+func (cpu *cpu) identify(pipelineChannel chan pipelineTypes.ChainPipe) (interface{}, error) {
+	dataChain, ok := <-pipelineChannel
+	if !ok {
+		return nil, fmt.Errorf("channel clossed")
+	}
+	Opcode := uint8(dataChain.Instr & 0x7f)
 	switch Opcode {
 	case opcodes.ITypeCode:
-		return opcodes.DecodeIType(instr), nil
+		return opcodes.DecodeIType(dataChain.Instr), nil
 	default:
-		return opcodes.DecodeIType(instr), fmt.Errorf("unsupported opcode: 0x%x", Opcode)
+		return opcodes.DecodeIType(dataChain.Instr), fmt.Errorf("unsupported opcode: 0x%x", Opcode)
 	}
 }
 

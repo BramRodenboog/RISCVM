@@ -3,7 +3,7 @@ package core
 import (
 	"fmt"
 
-	"github.com/BramRodenboog/RISCVM/core/opcodes"
+	pipelineTypes "github.com/BramRodenboog/RISCVM/core/types"
 	pkg "github.com/BramRodenboog/RISCVM/pkg"
 )
 
@@ -15,14 +15,16 @@ type cpu struct {
 }
 
 func (cpu *cpu) run() {
-	instr := cpu.fetch()
 
-	instrDecoded := pkg.ErrorCheck(cpu.identify(instr))
-	value := pkg.ErrorCheck(cpu.execute(instrDecoded))
-	if wb, ok := instrDecoded.(opcodes.WriteBack); ok {
-		cpu.writeBack(wb, value)
-	}
-	fmt.Printf("registers: %v\n", cpu.dump())
+	chainPipe := make(chan pipelineTypes.ChainPipe)
+	go cpu.fetch(chainPipe)
+	result := pkg.ErrorCheck(cpu.identify(chainPipe))
+	fmt.Printf("result: %v", result)
+	// value := pkg.ErrorCheck(cpu.execute(instrDecoded))
+	// if wb, ok := instrDecoded.(opcodes.WriteBack); ok {
+	// 	cpu.writeBack(wb, value)
+	// }
+	// fmt.Printf("registers: %v\n", cpu.dump())
 }
 
 func NewCpu() *cpu {
